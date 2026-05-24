@@ -1,0 +1,21 @@
+# Environment & secrets
+.env
+
+# SQLite database
+*.db
+data/
+
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# VS Code
+.vscode/
+
+# Docker
+*.tar
