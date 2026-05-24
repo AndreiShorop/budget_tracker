@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Budget Tracker</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body class="dashboard-page">
+
+  <!-- ── Navigation ───────────────────────────────────────── -->
+  <nav class="navbar">
+    <span class="nav-logo">💰 Budget Tracker</span>
+    <div class="nav-right">
+      <span class="nav-user">Hello, <strong>{{ username }}</strong></span>
+      <a href="/logout" class="btn-secondary">Log out</a>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- ── Summary cards ────────────────────────────────────── -->
+    <section class="summary-cards">
+      <div class="card card-income">
+        <p class="card-label">Total Income</p>
+        <p class="card-value" id="totalIncome">—</p>
+      </div>
+      <div class="card card-expense">
+        <p class="card-label">Total Expenses</p>
+        <p class="card-value" id="totalExpenses">—</p>
+      </div>
+      <div class="card card-balance">
+        <p class="card-label">Balance</p>
+        <p class="card-value" id="balance">—</p>
+      </div>
+    </section>
+
+    <!-- ── Charts ───────────────────────────────────────────── -->
+    <section class="charts-grid">
+      <div class="chart-box">
+        <h3>Income vs Expenses</h3>
+        <canvas id="barChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <h3>Expense Breakdown by Category</h3>
+        <canvas id="pieChart"></canvas>
+        <p id="pieEmpty" class="chart-empty hidden">No expense data yet.</p>
+      </div>
+    </section>
+
+    <!-- ── Add transaction form ──────────────────────────────── -->
+    <section class="form-section">
+      <h3>Add Transaction</h3>
+      <p id="formError" class="alert alert-error hidden"></p>
+      <form id="txForm" class="tx-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="txType">Type</label>
+            <select id="txType" name="type" required>
+              <option value="expense">Expense</option>
+              <option value="income">Income</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="txAmount">Amount</label>
+            <input id="txAmount" type="number" name="amount" min="0.01" step="0.01"
+                   placeholder="0.00" required />
+          </div>
+          <div class="form-group">
+            <label for="txDate">Date</label>
+            <input id="txDate" type="date" name="date" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label for="txName">Name / Description</label>
+            <input id="txName" type="text" name="name" placeholder="e.g. Grocery shopping"
+                   required maxlength="128" />
+          </div>
+          <div class="form-group flex-2">
+            <label for="txCategory">Category</label>
+            <input id="txCategory" type="text" name="category" placeholder="e.g. Food"
+                   maxlength="64" />
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Add</button>
+      </form>
+    </section>
+
+    <!-- ── Transactions table ────────────────────────────────── -->
+    <section class="table-section">
+      <h3>Transactions</h3>
+      <div class="table-controls">
+        <input id="filterInput" type="text" placeholder="Filter by name or category…" />
+        <select id="filterType">
+          <option value="">All types</option>
+          <option value="income">Income</option>
+          <option value="expense">Expense</option>
+        </select>
+      </div>
+      <div class="table-wrapper">
+        <table id="txTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Type</th>
+              <th>Amount</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="txBody">
+            <tr id="txLoading"><td colspan="6" class="center">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
